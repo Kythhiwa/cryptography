@@ -13,6 +13,7 @@ find_library(GMPXX_LIB NAMES gmpxx REQUIRED)
 add_executable(prog 
     main.cpp
     math/mod_arith.cpp
+    math/jacobi.cpp
 )
 
 target_include_directories(prog PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
