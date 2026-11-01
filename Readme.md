@@ -9,8 +9,9 @@ sudo apt install libgmp-dev
 sudo apt install libgtest-dev
 
 ```
+# Основная программа 
 
-# Сборка
+## Сборка
 
 ```
 cmake -B build -S .
@@ -18,17 +19,26 @@ cmake -B build -S .
 cmake --build build 
 ```
 
-# Запуск 
+## Запуск 
 
 ```
 ./build/prog
-```
-
-
-## Тесты
 
 ```
-cd tests
 
-make run
+
+# Тесты
+
+## Сборка
+
+```
+cmake -B build -S .
+cmake --build build 
+
+```
+
+## Запуск
+
+```
+./build/Testing
 ```
