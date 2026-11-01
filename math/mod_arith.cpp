@@ -5,10 +5,10 @@ namespace modarith
 namespace
 {
 
-int bit_length(const mpz_class& t)
+std::size_t bit_length(const mpz_class& t)
 {
     mpz_class x = t;
-    int n = 0;
+    std::size_t n = 0;
     while (x > 0)
     {
         x >>= 1;
@@ -28,7 +28,7 @@ mpz_class gcd(const mpz_class& a, const mpz_class& b)
 
     mpz_class divisible = abs(a);
     mpz_class divider = abs(b);
-    int shift = 0;
+    std::size_t shift = 0;
 
     while ((divisible & 1) == 0 && (divider & 1) == 0)
     {
@@ -61,7 +61,7 @@ mpz_class pow_mod(const mpz_class& a, const mpz_class& b, const mpz_class& m)
     if (b == 0)
         return mpz_class(1);
 
-    int len = bit_length(b);
+    std::size_t len = bit_length(b);
     if (len == 1)
         return mul_mod(a, mpz_class(1), m);
 
@@ -90,9 +90,7 @@ mpz_class mul_mod(const mpz_class& a, const mpz_class& b, const mpz_class& m)
         a_p = (k == 0) ? mpz_class(0) : (m - k);
     }
     else
-    {
         mod_shift(a_p, m);
-    }
 
     mpz_class b_p;
     const mpz_class* b_ptr = &b;
@@ -101,7 +99,8 @@ mpz_class mul_mod(const mpz_class& a, const mpz_class& b, const mpz_class& m)
         mpz_class k = -b;
         mod_shift(k, m);
         b_p = (k == 0) ? mpz_class(0) : (m - k);
-        if (b_p == 0) return mpz_class(0);
+        if (b_p == 0)
+            return mpz_class(0);
         b_ptr = &b_p;
     }
     const mpz_class& bb = *b_ptr;
