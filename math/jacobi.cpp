@@ -8,10 +8,11 @@ using namespace modarith;
 
 mpz_class jacobi(const mpz_class& a, const mpz_class& n)
 {
+    if ((n & 1) == 0 || n <= 0)
+        throw std::invalid_argument("n must be an odd number greater than 1\n");
+
     if (n == 1)
         return 1;
-    if ((n & 1) == 0)
-        return 0;
 
     mpz_class a_p = a;
     mpz_class n_p = n;
@@ -24,13 +25,7 @@ mpz_class jacobi(const mpz_class& a, const mpz_class& n)
             sign = -sign;
     }
 
-    while (a_p >= n_p)
-    {
-        mpz_class t = n_p;
-        while ((t << 1) <= a_p)
-            t <<= 1;
-        a_p -= t;
-    }
+    mod_shift(a_p, n_p);
 
     while (a_p != 0)
     {
@@ -54,13 +49,7 @@ mpz_class jacobi(const mpz_class& a, const mpz_class& n)
             sign = -sign;
 
         std::swap(a_p, n_p);
-        while (a_p >= n_p)
-        {
-            mpz_class t = n_p;
-            while ((t << 1) <= a_p)
-                t <<= 1;
-            a_p -= t;
-        }
+        mod_shift(a_p, n_p);
     }
     return 0;
 }

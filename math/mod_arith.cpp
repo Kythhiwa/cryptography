@@ -5,8 +5,6 @@ namespace modarith
 namespace
 {
 
-mpz_class abs(const mpz_class& a) {return(a > 0 ? a : -a);}
-
 int bit_length(const mpz_class& t)
 {
     mpz_class x = t;
@@ -57,12 +55,16 @@ mpz_class gcd(const mpz_class& a, const mpz_class& b)
 
 mpz_class pow_mod(const mpz_class& a, const mpz_class& b, const mpz_class& m)
 {
+    if(m == 1)
+        return mpz_class(0);
+
     if (b == 0)
         return mpz_class(1);
 
     int len = bit_length(b);
     if (len == 1)
         return mul_mod(a, mpz_class(1), m);
+
     mpz_class mask = mpz_class(1) << (len - 2);
     mpz_class res = a;
 
@@ -82,13 +84,8 @@ mpz_class mul_mod(const mpz_class& a, const mpz_class& b, const mpz_class& m)
 
     mpz_class a_p = a;
 
-    while (a_p >= m)
-    {
-        mpz_class t = m;
-        while ((t << 1) <= a_p)
-            t <<= 1;
-        a_p -= t;
-    }
+    mod_shift(a_p, m);
+
     mpz_class res = 0;
     mpz_class mask = mpz_class(1) << (bit_length(b) - 1);
 
@@ -105,6 +102,18 @@ mpz_class mul_mod(const mpz_class& a, const mpz_class& b, const mpz_class& m)
         }
     }
     return res;
+}
+
+void mod_shift(mpz_class& a, const mpz_class& n)
+{
+    mpz_class temp;
+    while (a >= n)
+    {
+        temp = n;
+        while((temp << 1) <= a)
+            temp <<= 1;
+        a -= temp;
+    }
 }
 
 }
