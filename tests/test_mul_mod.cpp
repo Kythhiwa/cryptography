@@ -67,10 +67,10 @@ TEST(MulModTest, LargeNumbers)
     mpz_class p("10000000000000000000000000000051");
     mpz_class q("10000000000000000000000000000097");
     
-    EXPECT_EQ(modarith::mul_mod(p - 1, q - 1, p), mpz_class(1));
+    EXPECT_EQ(modarith::mul_mod(p - 1, q - 1, p), mpz_class("10000000000000000000000000000006"));
     
     mpz_class huge_val("9999999999999999999999999999999999999999999");
     mpz_class huge_mod("1000000000000000000000000000000000000000007");
     
-    EXPECT_EQ(modarith::mul_mod(huge_val, mpz_class(2), huge_mod), mpz_class("9999999999999999999999999999999999999999985"));
+    EXPECT_EQ(modarith::mul_mod(huge_val, mpz_class(2), huge_mod), mpz_class("999999999999999999999999999999999999999865"));
 }
