@@ -83,18 +83,38 @@ mpz_class mul_mod(const mpz_class& a, const mpz_class& b, const mpz_class& m)
         return mpz_class(0);
 
     mpz_class a_p = a;
+    if (a_p < 0)
+    {
+        mpz_class k = -a_p;
+        mod_shift(k, m);
+        a_p = (k == 0) ? mpz_class(0) : (m - k);
+    }
+    else
+    {
+        mod_shift(a_p, m);
+    }
 
-    mod_shift(a_p, m);
+    mpz_class b_p;
+    const mpz_class* b_ptr = &b;
+    if (b < 0)
+    {
+        mpz_class k = -b;
+        mod_shift(k, m);
+        b_p = (k == 0) ? mpz_class(0) : (m - k);
+        if (b_p == 0) return mpz_class(0);
+        b_ptr = &b_p;
+    }
+    const mpz_class& bb = *b_ptr;
 
     mpz_class res = 0;
-    mpz_class mask = mpz_class(1) << (bit_length(b) - 1);
+    mpz_class mask = mpz_class(1) << (bit_length(bb) - 1);
 
     for (; mask > 0; mask >>= 1)
     {
         res += res;
         if (res >= m)
             res -= m;
-        if ((b & mask) != 0)
+        if ((bb & mask) != 0)
         {
             res += a_p;
             if (res >= m)
