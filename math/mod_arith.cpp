@@ -1,6 +1,5 @@
 #include "mod_arith.hpp"
 
-
 namespace modarith
 {
 namespace

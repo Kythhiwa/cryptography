@@ -2,7 +2,8 @@ CXX      = g++
 CXXFLAGS = -std=c++17 -Wall -Wextra -I../math
 LDFLAGS  = -lgmpxx -lgmp
 
-SRCS = test_main.cpp test_gcd.cpp test_pow_mod.cpp test_mul_mod.cpp ../math/mod_arith.cpp
+SRCS = test_main.cpp test_gcd.cpp test_pow_mod.cpp test_mul_mod.cpp test_jacobi.cpp test_solovay_strassen.cpp \
+       ../math/mod_arith.cpp ../math/jacobi.cpp ../math/solovay_strassen.cpp
 OBJS = $(SRCS:.cpp=.o)
 
 TARGET = tests

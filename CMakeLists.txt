@@ -10,10 +10,11 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 find_library(GMP_LIB NAMES gmp REQUIRED)
 find_library(GMPXX_LIB NAMES gmpxx REQUIRED)
 
-add_executable(prog 
+add_executable(prog
     main.cpp
     math/mod_arith.cpp
     math/jacobi.cpp
+    math/solovay_strassen.cpp
 )
 
 target_include_directories(prog PRIVATE
