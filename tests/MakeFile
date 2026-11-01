@@ -1,0 +1,12 @@
+add_executable(tests
+    tests/test_main.cpp
+    tests/test_gcd.cpp
+    tests/test_pow_mod.cpp
+    tests/test_mul_mod.cpp
+    math/mod_arith.cpp
+)
+target_include_directories(tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/math)
+target_link_libraries(tests PRIVATE ${GMPXX_LIB} ${GMP_LIB})
+
+enable_testing()
+add_test(NAME unit_tests COMMAND tests)

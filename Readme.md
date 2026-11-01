@@ -11,3 +11,12 @@ cmake --build build
 ```
 ./build/prog
 ```
+
+
+## Тесты
+
+```
+cd tests
+
+make run
+```
