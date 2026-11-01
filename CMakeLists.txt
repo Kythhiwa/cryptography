@@ -16,5 +16,8 @@ add_executable(prog
     math/jacobi.cpp
 )
 
-target_include_directories(prog PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(prog PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/math
+)
 target_link_libraries(prog PRIVATE ${GMPXX_LIB} ${GMP_LIB})
