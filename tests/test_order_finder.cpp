@@ -30,12 +30,18 @@ protected:
 void assert_valid_order(const mpz_class& x, const mpz_class& q, 
     const std::vector<mpz_class>& qd, const mpz_class& m) 
 {
-    (void)qd;
     EXPECT_GE(x, 1);
     EXPECT_LT(x, m);
 
     mpz_class pow_q = modarith::pow_mod(x, q, m);
     EXPECT_EQ(pow_q, 1) << "Failed: x^q != 1 (mod m)";
+
+    for (const auto& d : qd) 
+    {
+        mpz_class exp = modarith::mul_mod(q, modarith::pow_mod(d, m - 2, m), m);
+        EXPECT_NE(modarith::pow_mod(x, exp, m), 1)
+            << "Failed: order is smaller than q (divisor " << d << ")";
+    }
 }
 
 TEST_F(OrderFinderTest, ThrowsOnInvalidM)
