@@ -17,6 +17,7 @@ add_executable(prog
     math/solovay_strassen.cpp
     math/order_finder.cpp
     math/runners.cpp
+    math/generate.cpp
 )
 
 target_include_directories(prog PRIVATE
