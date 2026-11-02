@@ -20,9 +20,11 @@ add_executable(Testing
     test_mul_mod.cpp
     test_pow_mod.cpp
     test_solovay_strassen.cpp
+    test_order_finder.cpp
     ../math/jacobi.cpp  
     ../math/mod_arith.cpp 
     ../math/solovay_strassen.cpp
+    ../math/order_finder.cpp
 )
 
 target_include_directories(Testing PRIVATE

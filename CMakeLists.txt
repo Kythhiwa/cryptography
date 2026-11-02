@@ -15,6 +15,7 @@ add_executable(prog
     math/mod_arith.cpp
     math/jacobi.cpp
     math/solovay_strassen.cpp
+    math/order_finder
 )
 
 target_include_directories(prog PRIVATE
