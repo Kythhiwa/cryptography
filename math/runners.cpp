@@ -1,5 +1,9 @@
+#include <cmath>
+
+#include "runners.hpp"
 #include "order_finder.hpp"
 #include "solovay_strassen.hpp"
+
 
 namespace runners
 {
@@ -20,7 +24,7 @@ int count_N(const mpz_class& q, const std::vector<mpz_class>& qd, double PTarget
 }
 
 double run_find_element_with_order(const mpz_class& q, const std::vector<mpz_class>& qd, const mpz_class& m,
-                                   gmp_randclass& rng, const double PTarget, const int l)
+                                   gmp_randclass& rng, const double PTarget, int l)
 {
     if (l <= 0)
         throw std::invalid_argument("l must be > 0");
