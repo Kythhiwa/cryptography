@@ -25,6 +25,8 @@ add_executable(Testing
     ../math/mod_arith.cpp 
     ../math/solovay_strassen.cpp
     ../math/order_finder.cpp
+    ../math/runners.cpp
+    ../math/generate.cpp
 )
 
 target_include_directories(Testing PRIVATE
