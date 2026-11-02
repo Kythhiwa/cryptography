@@ -1,6 +1,7 @@
 #pragma once
-#include  <gmpxx.h>
+#include <gmpxx.h>
 #include <vector>
+#include <stdexcept>
 
 namespace modarith
 {

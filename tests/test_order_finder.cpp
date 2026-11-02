@@ -172,25 +172,36 @@ TEST_F(OrderFinderTest, ThousandRunsOn32Bit)
     EXPECT_EQ(failed_round, 0)     << "round_out not set";
 }
 
-TEST_F(OrderFinderTest, SingleModulusManyRunsOn32Bit)
+TEST_F(OrderFinderTest, ModulusManyRunsOn32Bit)
 {
     rng.seed(7);
 
-    mpz_class p1, p2;
-    mpz_class m = generate::m_2p1p2(32, rng, p1, p2);
-    auto cases = generate::make_cases(m, p1, p2);
+    const int NUM_M      = 50;
+    const int RUNS_PER_M = 20;
+    const int K          = 200;
 
     int failed = 0;
-    for (int r = 0; r < 1000; ++r)
-    {
-        const auto& tc = cases[r % cases.size()];
-        int round_out = -1;
-        mpz_class x = modarith::find_element_with_order(
-            tc.q, tc.qd, tc.m, rng, 200, &round_out);
+    int total  = 0;
 
-        if (x == mpz_class(-1)) { ++failed; continue; }
-        assert_valid_order(x, tc.q, tc.qd, tc.m);
+    for (int mi = 0; mi < NUM_M; ++mi)
+    {
+        mpz_class p1, p2;
+        mpz_class m = generate::m_2p1p2(32, rng, p1, p2);
+        auto cases = generate::make_cases(m, p1, p2);
+
+        for (int r = 0; r < RUNS_PER_M; ++r)
+        {
+            const auto& tc = cases[r % cases.size()];
+            int round_out = -1;
+            mpz_class x = modarith::find_element_with_order(
+                tc.q, tc.qd, tc.m, rng, K, &round_out);
+
+            ++total;
+            if (x == mpz_class(-1)) { ++failed; continue; }
+            assert_valid_order(x, tc.q, tc.qd, tc.m);
+        }
     }
 
+    EXPECT_EQ(total, NUM_M * RUNS_PER_M);
     EXPECT_EQ(failed, 0);
 }
