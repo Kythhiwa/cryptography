@@ -1,6 +1,6 @@
 #include <iostream>
 #include <gmpxx.h>
-#include "mod_arith.hpp"
+#include "runners.hpp"
 
 using namespace modarith;
 

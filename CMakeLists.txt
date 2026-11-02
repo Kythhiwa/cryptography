@@ -16,6 +16,7 @@ add_executable(prog
     math/jacobi.cpp
     math/solovay_strassen.cpp
     math/order_finder
+    runners/runners.cpp
 )
 
 target_include_directories(prog PRIVATE
