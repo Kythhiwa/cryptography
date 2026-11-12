@@ -32,7 +32,7 @@ double run_find_element_with_order(const mpz_class& q, const std::vector<mpz_cla
     if (gcd(q, m - 1) != q)
         throw std::invalid_argument("q must divide m-1");
     if (!util::solovay_strassen(m, 40, rng))
-        throw std::invalid_argument("m must be prime"); // здесь, чтобы не проверять на простоту l раз
+        throw std::invalid_argument("m must be prime");
     
     int N_target = count_N(q, qd, PTarget);
     int N_max    = (maxRounds == 0) ? N_target : maxRounds;
@@ -42,11 +42,10 @@ double run_find_element_with_order(const mpz_class& q, const std::vector<mpz_cla
 
     for (int i = 0; i < l; ++i)
     {
-        int r = -1;
-        mpz_class x = modarith::find_element_with_order(q, qd, m, rng, N_max, &r);
-        if (x == mpz_class(-1)) continue;
-        rounds_out.push_back(r);
-        if (r <= N_target) ++correct;
+        auto res = modarith::find_element_with_order(q, qd, m, rng, N_max);
+        if (res.x == mpz_class(-1)) continue;
+        rounds_out.push_back(res.round);
+        if (res.round <= N_target) ++correct;
     }
     return (double)correct / l;
 }

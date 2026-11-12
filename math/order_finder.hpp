@@ -2,12 +2,20 @@
 #include <gmpxx.h>
 #include <vector>
 #include <stdexcept>
+#include <optional>
+
 
 namespace modarith
 {
 
-mpz_class find_element_with_order(
+struct OrderResult
+{
+    mpz_class x;
+    int round = -1;
+};
+
+OrderResult find_element_with_order(
     const mpz_class& q, const std::vector<mpz_class>& qd, const mpz_class& m,
-    gmp_randclass& rng, int k = 64, int* round_out = nullptr);
+    gmp_randclass& rng, int k = 64);
 
 }

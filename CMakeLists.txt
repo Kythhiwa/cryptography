@@ -25,3 +25,20 @@ target_include_directories(prog PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/math
 )
 target_link_libraries(prog PRIVATE ${GMPXX_LIB} ${GMP_LIB})
+
+
+add_executable(experiment
+    experiment.cpp
+    math/mod_arith.cpp
+    math/jacobi.cpp
+    math/solovay_strassen.cpp
+    math/order_finder.cpp
+    math/runners.cpp
+    math/generate.cpp
+)
+
+target_include_directories(experiment PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/math
+)
+target_link_libraries(experiment PRIVATE ${GMPXX_LIB} ${GMP_LIB})

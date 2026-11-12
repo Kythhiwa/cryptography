@@ -1,47 +1,68 @@
 #include <iostream>
-#include <fstream>
-#include <cmath>
-#include <map>
-#include <vector>
 #include <gmpxx.h>
+#include <stdexcept>
 
-#include "generate.hpp"
-#include "runners.hpp"
+#include "order_finder.hpp"
+#include "mod_arith.hpp"
+#include "solovay_strassen.hpp"
 
-int main()
+void check_qd(const mpz_class& q, const std::vector<mpz_class>& qd,
+              gmp_randclass& rng)
 {
+    mpz_class qd_product = 1;
+    for (const auto& d : qd)
+    {
+        if (!util::solovay_strassen(d, 40, rng))
+            throw std::invalid_argument("qd element must be prime");
+        if (gcd(q, d) != d)
+            throw std::invalid_argument("qd element is not a divisor of q");
+        qd_product *= d;
+    }
+    if (qd_product != q)
+        throw std::invalid_argument("qd must be exactly the prime divisors of q");
+}
+
+int main(int argc, char** argv)
+{
+    if (argc < 4) {
+        std::cerr << "usage: " << argv[0] << " <m> <q> <p1> [p2 ...]\n";
+        return 1;
+    }
+
+    mpz_class m(argv[1]);
+    mpz_class q(argv[2]);
+
+    std::vector<mpz_class> qd;
+    for (int i = 3; i < argc; ++i)
+        qd.emplace_back(argv[i]);
+
     gmp_randclass rng(gmp_randinit_mt);
     rng.seed(42);
 
-    std::ofstream summary("summary.csv");
-    std::ofstream hist_csv("rounds.csv");
-    summary  << "bits,q,p_theor,N,P_actual,P_obs\n";
-    hist_csv << "bits,q,R,N_R\n";
+    try {
+        if (m <= 1)
+            throw std::invalid_argument("m must be > 1");
+        if (q <= 0)
+            throw std::invalid_argument("q must be positive");
 
-    const double PTarget = 0.95;
+        check_qd(q, qd, rng);
 
-    for (int bits : {32, 64, 128}) {
-        mpz_class p1, p2;
-        mpz_class m = generate::m_2p1p2(bits, rng, p1, p2);
+        if (!util::solovay_strassen(m, 40, rng))
+            throw std::invalid_argument("m must be prime");
 
-        for (const auto& tc : generate::make_cases(m, p1, p2)) {
-            int N = runners::count_N(tc.q, tc.qd, PTarget);
-            double P_actual = 1.0 - std::pow(1.0 - tc.p_theor, N);
+        if (gcd(q, m - 1) != q)
+            throw std::invalid_argument("q must divide m-1");
 
-            std::vector<int> rounds;
-            double P_obs = runners::run_find_element_with_order(
-                tc.q, tc.qd, tc.m, rng, PTarget, 1000, rounds, 50);
+        auto res = modarith::find_element_with_order(q, qd, m, rng, 200);
 
-            summary << bits << "," << tc.q << "," << tc.p_theor << ","
-                    << N << "," << P_actual << "," << P_obs << "\n";
-
-            std::map<int,int> h;
-            for (int R : rounds) h[R]++;
-            for (auto& [R, cnt] : h)
-                hist_csv << bits << "," << tc.q << "," << R << "," << cnt << "\n";
-        }
+        if (res.x == mpz_class(-1))
+            std::cout << "not found in 200 rounds\n";
+        else
+            std::cout << "x = " << res.x
+                      << "  (round " << res.round << ")\n";
+    } catch (const std::exception& e) {
+        std::cerr << "error: " << e.what() << "\n";
+        return 1;
     }
-
-    std::cout << "written summary.csv, rounds.csv\n";
     return 0;
 }

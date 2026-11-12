@@ -22,10 +22,16 @@ cmake --build build
 ## Запуск 
 
 ```
-./build/prog
+./build/prog <m> <q> <qd1> <qd2> ... <qdn>
 
 ```
 
+## Запуск эксперимента
+
+```
+./build/experiment
+
+```
 
 # Тесты
 

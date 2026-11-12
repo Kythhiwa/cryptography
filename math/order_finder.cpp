@@ -9,27 +9,31 @@
 namespace modarith
 {
 
-mpz_class find_element_with_order(
+OrderResult find_element_with_order(
     const mpz_class& q, const std::vector<mpz_class>& qd, const mpz_class& m,
-    gmp_randclass& rng, int k, int* round_out)
+    gmp_randclass& rng, int k)
 {
-    if (round_out) *round_out = -1;
+    OrderResult res;
 
     if (m <= 1)
         throw std::invalid_argument("m must be > 1");
     if (q <= 0)
         throw std::invalid_argument("q must be positive");
+    if (gcd(q, m - 1) != q)
+        throw std::invalid_argument("q must divide m-1");
+    if (!util::solovay_strassen(m, 40, rng))
+        throw std::invalid_argument("m must be prime");
 
     if (q == 1)
     {
-        if (round_out) *round_out = 0;
-        return 1;
+        res.x = 1;
+        res.round = 0;
+        return res;
     }
 
     mpz_class c = mul_mod(m - 1, pow_mod(q, m - 2, m), m);
 
     std::vector<mpz_class> exponents(qd.size());
-
     for (std::size_t i = 0; i < qd.size(); ++i)
         exponents[i] = mul_mod(q, pow_mod(qd[i], m - 2, m), m);
 
@@ -56,11 +60,14 @@ mpz_class find_element_with_order(
         if (!ok)
             continue;
 
-        if (round_out) *round_out = i;
-        return a;
+        res.x = a;
+        res.round = i;
+        return res;
     }
 
-    return mpz_class(-1);
+    res.x = mpz_class(-1);
+    res.round = -1;
+    return res;
 }
 
 }
