@@ -45,7 +45,7 @@ mpz_class pow_mod(const mpz_class& a, const mpz_class& b, const mpz_class& m)
     if (b == 0)
         return mpz_class(1);
 
-    const std::size_t len = utils::bit_length(b);
+    const int len = utils::bit_length(b);
     if (len == 1)
         return mul_mod(a, mpz_class(1), m);
 
