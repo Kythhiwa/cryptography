@@ -38,6 +38,7 @@ cmake --build build
 ## Сборка
 
 ```
+cs tests/
 cmake -B build -S .
 cmake --build build 
 
