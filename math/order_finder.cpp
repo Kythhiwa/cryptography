@@ -40,8 +40,6 @@ OrderResult find_element_with_order(
     for (std::size_t i = 1; i <= k; ++i)
     {
         mpz_class a = rng.get_z_range(m - 1) + 1;
-        if (gcd(a, m) != 1)
-            continue;
 
         a = pow_mod(a, c, m);
         if (a == 1)
