@@ -4,6 +4,6 @@
 namespace utils
 {
 
-std::size_t bit_length(const mpz_class& t);
+int bit_length(const mpz_class& t);
 
 }

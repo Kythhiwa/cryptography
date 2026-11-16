@@ -6,10 +6,10 @@ namespace utils
 
 
 
-std::size_t bit_length(const mpz_class& t)
+int bit_length(const mpz_class& t)
 {
     mpz_class x = t;
-    std::size_t n = 0;
+    int n = 0;
     while (x > 0)
     {
         x >>= 1;
