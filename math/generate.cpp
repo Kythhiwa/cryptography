@@ -9,14 +9,6 @@ namespace generate
 
 namespace
 {
-
-int bit_length_local(const mpz_class& t)
-{
-    mpz_class x = t; int n = 0;
-    while (x > 0) { x >>= 1; ++n; }
-    return n;
-}
-
 const std::vector<mpz_class> SMALL_PRIMES = {
     mpz_class(3),  mpz_class(5),  mpz_class(7),  mpz_class(11),
     mpz_class(13), mpz_class(17), mpz_class(19), mpz_class(23),
@@ -61,14 +53,14 @@ mpz_class q_from_small_primes(int k, gmp_randclass& rng,
 mpz_class m_for_q(const mpz_class& q, int bits, gmp_randclass& rng,
                   mpz_class& R_out)
 {
-    int q_bits = bit_length_local(q);
+    int q_bits = utils::bit_length(q);
     int R_bits = bits - 1 - q_bits;
     if (R_bits < 8) R_bits = 8;
 
     while (true) {
         mpz_class R = prime(R_bits, rng);
         mpz_class m = 2 * q * R + 1;
-        if (bit_length_local(m) != bits) continue;
+        if (utils::bit_length(m) != bits) continue;
         if (util::solovay_strassen(m, 40, rng)) {
             R_out = R;
             return m;

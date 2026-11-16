@@ -18,6 +18,7 @@ add_executable(prog
     math/order_finder.cpp
     math/runners.cpp
     math/generate.cpp
+    math/utils.cpp
 )
 
 target_include_directories(prog PRIVATE
@@ -35,6 +36,7 @@ add_executable(experiment
     math/order_finder.cpp
     math/runners.cpp
     math/generate.cpp
+    math/utils.cpp
 )
 
 target_include_directories(experiment PRIVATE

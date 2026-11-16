@@ -2,22 +2,6 @@
 
 namespace modarith
 {
-namespace
-{
-
-std::size_t bit_length(const mpz_class& t)
-{
-    mpz_class x = t;
-    std::size_t n = 0;
-    while (x > 0)
-    {
-        x >>= 1;
-        ++n;
-    }
-    return n;
-}
-
-}
 
 mpz_class gcd(const mpz_class& a, const mpz_class& b)
 {
@@ -61,7 +45,7 @@ mpz_class pow_mod(const mpz_class& a, const mpz_class& b, const mpz_class& m)
     if (b == 0)
         return mpz_class(1);
 
-    std::size_t len = bit_length(b);
+    std::size_t len = utils::bit_length(b);
     if (len == 1)
         return mul_mod(a, mpz_class(1), m);
 
@@ -106,7 +90,7 @@ mpz_class mul_mod(const mpz_class& a, const mpz_class& b, const mpz_class& m)
     const mpz_class& bb = *b_ptr;
 
     mpz_class res = 0;
-    mpz_class mask = mpz_class(1) << (bit_length(bb) - 1);
+    mpz_class mask = mpz_class(1) << (utils::bit_length(bb) - 1);
 
     for (; mask > 0; mask >>= 1)
     {

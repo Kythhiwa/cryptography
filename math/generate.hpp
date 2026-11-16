@@ -1,6 +1,9 @@
 #pragma once
-#include <gmpxx.h>
+
 #include <vector>
+#include <gmpxx.h>
+
+#include "utils.hpp"
 
 namespace generate
 {

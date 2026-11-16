@@ -1,6 +1,8 @@
 #pragma once
 #include <gmpxx.h>
 
+#include "utils.hpp"
+
 namespace modarith
 {
 
