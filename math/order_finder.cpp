@@ -37,7 +37,7 @@ OrderResult find_element_with_order(
     for (std::size_t i = 0; i < qd.size(); ++i)
         exponents[i] = mul_mod(q, pow_mod(qd[i], m - 2, m), m);
 
-    for (int i = 1; i <= k; ++i)
+    for (std::size_t i = 1; i <= k; ++i)
     {
         mpz_class a = rng.get_z_range(m - 1) + 1;
         if (gcd(a, m) != 1)
@@ -47,15 +47,8 @@ OrderResult find_element_with_order(
         if (a == 1)
             continue;
 
-        bool ok = true;
-        for (std::size_t j = 0; j < qd.size(); ++j)
-        {
-            if (pow_mod(a, exponents[j], m) == 1)
-            {
-                ok = false;
-                break;
-            }
-        }
+        bool ok = std::none_of(exponents.begin(), exponents.end(), 
+                [&] (const mpz_class& e) { return pow_mod(a, e, m) == 1; });
 
         if (!ok)
             continue;
