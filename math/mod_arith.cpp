@@ -39,13 +39,13 @@ mpz_class gcd(const mpz_class& a, const mpz_class& b)
 
 mpz_class pow_mod(const mpz_class& a, const mpz_class& b, const mpz_class& m)
 {
-    if(m == 1)
+    if (m == 1)
         return mpz_class(0);
 
     if (b == 0)
         return mpz_class(1);
 
-    std::size_t len = utils::bit_length(b);
+    const std::size_t len = utils::bit_length(b);
     if (len == 1)
         return mul_mod(a, mpz_class(1), m);
 

@@ -31,7 +31,7 @@ OrderResult find_element_with_order(
         return res;
     }
 
-    mpz_class c = mul_mod(m - 1, pow_mod(q, m - 2, m), m);
+    const mpz_class c = mul_mod(m - 1, pow_mod(q, m - 2, m), m);
 
     std::vector<mpz_class> exponents(qd.size());
     for (std::size_t i = 0; i < qd.size(); ++i)
