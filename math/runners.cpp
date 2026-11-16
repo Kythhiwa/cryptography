@@ -13,11 +13,12 @@ int count_N(const mpz_class& q, const std::vector<mpz_class>& qd, double PTarget
     if (q <= 1)
         return 1;
     double p = 1.0;
-    for (const auto& d : qd) {
+    for (const auto& d : qd)
+    {
         double pd = d.get_d();
         p *= (1.0 - 1.0 / pd);
     }
-    return (int)std::ceil(std::log(1.0 - PTarget) / std::log(1.0 - p));
+    return static_cast<int>(std::ceil(std::log(1.0 - PTarget) / std::log(1.0 - p)));
 }
 
 double run_find_element_with_order(const mpz_class& q, const std::vector<mpz_class>& qd, const mpz_class& m,
@@ -34,19 +35,21 @@ double run_find_element_with_order(const mpz_class& q, const std::vector<mpz_cla
     if (!util::solovay_strassen(m, 40, rng))
         throw std::invalid_argument("m must be prime");
     
-    int N_target = count_N(q, qd, PTarget);
-    int N_max    = (maxRounds == 0) ? N_target : maxRounds;
+    const int N_target = count_N(q, qd, PTarget);
+    const int N_max    = (maxRounds == 0) ? N_target : maxRounds;
 
     int correct = 0;
     rounds_out.clear();
-
-    for (int i = 0; i < l; ++i)
+    rounds_out.reserve(l);
+    for (std::size_t i = 0; i < l; ++i)
     {
         auto res = modarith::find_element_with_order(q, qd, m, rng, N_max);
-        if (res.x == mpz_class(-1)) continue;
-        rounds_out.push_back(res.round);
-        if (res.round <= N_target) ++correct;
+        if (res.x == mpz_class(-1))
+            continue;
+        rounds_out.emplace_back(res.round);
+        if (res.round <= N_target)
+            ++correct;
     }
-    return (double)correct / l;
+    return static_cast<double>(correct) / l;
 }
 }
