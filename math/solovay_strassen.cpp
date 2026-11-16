@@ -16,7 +16,7 @@ bool solovay_strassen(const mpz_class& m, int k, gmp_randclass& rng)
     if ((m & 1) == 0)
         return false;
 
-    for (int i = 0; i < k; ++i)
+    for (std::size_t i = 0; i < k; ++i)
     {
         mpz_class a = rng.get_z_range(m - 3) + 2;
 
