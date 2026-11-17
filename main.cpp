@@ -6,21 +6,6 @@
 #include "mod_arith.hpp"
 #include "solovay_strassen.hpp"
 
-void check_qd(const mpz_class& q, const std::vector<mpz_class>& qd,
-              gmp_randclass& rng)
-{
-    mpz_class qd_product = 1;
-    for (const auto& d : qd)
-    {
-        if (!util::solovay_strassen(d, 40, rng))
-            throw std::invalid_argument("qd element must be prime");
-        if (gcd(q, d) != d)
-            throw std::invalid_argument("qd element is not a divisor of q");
-        qd_product *= d;
-    }
-    if (qd_product != q)
-        throw std::invalid_argument("qd must be exactly the prime divisors of q");
-}
 
 int main(int argc, char** argv)
 {
@@ -45,7 +30,6 @@ int main(int argc, char** argv)
         if (q <= 0)
             throw std::invalid_argument("q must be positive");
 
-        check_qd(q, qd, rng);
 
         if (!util::solovay_strassen(m, 40, rng))
             throw std::invalid_argument("m must be prime");
